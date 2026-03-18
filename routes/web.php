@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WorkspaceController;
@@ -16,7 +17,7 @@ Route::get('invitations/{token}', [WorkspaceInvitationController::class, 'show']
 Route::post('invitations/{token}/accept', [WorkspaceInvitationController::class, 'accept'])->name('invitations.accept');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('workspaces', [WorkspaceController::class, 'index'])->name('workspaces.index');
     Route::post('workspaces', [WorkspaceController::class, 'store'])->name('workspaces.store');

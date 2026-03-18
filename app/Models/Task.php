@@ -111,7 +111,12 @@ class Task extends Model
      */
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        if (! empty($filters['status'])) {
+        if (! empty($filters['status_exclude'])) {
+            $exclude = is_array($filters['status_exclude'])
+                ? $filters['status_exclude']
+                : [$filters['status_exclude']];
+            $query->whereNotIn('status', $exclude);
+        } elseif (! empty($filters['status'])) {
             $statuses = is_array($filters['status'])
                 ? $filters['status']
                 : [$filters['status']];
@@ -134,6 +139,12 @@ class Task extends Model
 
         if (! empty($filters['project_id'])) {
             $query->where('project_id', $filters['project_id']);
+        }
+
+        if (! empty($filters['workspace_id'])) {
+            $query->whereHas('project', function (Builder $q) use ($filters) {
+                $q->where('workspace_id', $filters['workspace_id']);
+            });
         }
 
         return $query;

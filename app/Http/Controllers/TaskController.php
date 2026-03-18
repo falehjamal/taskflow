@@ -38,6 +38,18 @@ class TaskController extends Controller
             }
         }
 
+        if ($request->input('redirect') === 'dashboard') {
+            $params = $request->only([
+                'status', 'status_exclude', 'search', 'project_id',
+                'workspace_id', 'assigned_to', 'due_from', 'due_to',
+                'sort_by', 'sort_dir',
+            ]);
+
+            return redirect()
+                ->route('dashboard', array_filter($params))
+                ->with('success', 'Task berhasil dibuat.');
+        }
+
         return redirect()
             ->route('workspaces.projects.show', [$workspace, $project])
             ->with('success', 'Task berhasil dibuat.');
