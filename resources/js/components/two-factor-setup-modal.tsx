@@ -104,7 +104,7 @@ function TwoFactorSetupStep({
                     <div className="relative flex w-full items-center justify-center">
                         <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
                         <span className="relative bg-card px-2 py-1">
-                            or, enter the code manually
+                            atau masukkan kode secara manual
                         </span>
                     </div>
 
@@ -218,7 +218,7 @@ function TwoFactorVerificationStep({
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                Confirm
+                                Konfirmasi
                             </Button>
                         </div>
                     </div>
@@ -263,25 +263,25 @@ export default function TwoFactorSetupModal({
             return {
                 title: 'Two-factor authentication enabled',
                 description:
-                    'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.',
-                buttonText: 'Close',
+                    'Two-factor authentication telah diaktifkan. Scan QR code atau masukkan setup key di aplikasi authenticator Anda.',
+                buttonText: 'Tutup',
             };
         }
 
         if (showVerificationStep) {
             return {
-                title: 'Verify authentication code',
+                title: 'Verifikasi authentication code',
                 description:
-                    'Enter the 6-digit code from your authenticator app',
-                buttonText: 'Continue',
+                    'Masukkan kode 6 digit dari aplikasi authenticator Anda',
+                buttonText: 'Lanjutkan',
             };
         }
 
         return {
-            title: 'Enable two-factor authentication',
+            title: 'Aktifkan two-factor authentication',
             description:
-                'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
-            buttonText: 'Continue',
+                'Scan QR code atau masukkan setup key di aplikasi authenticator untuk menyelesaikan setup.',
+            buttonText: 'Lanjutkan',
         };
     }, [twoFactorEnabled, showVerificationStep]);
 

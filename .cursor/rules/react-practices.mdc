@@ -19,6 +19,12 @@ alwaysApply: true
 - `Head` untuk title dan meta.
 - `router.visit()` untuk programmatic navigation.
 
+## Bahasa UI
+
+- **Dasar**: Indonesia untuk label, tombol, deskripsi, pesan.
+- **Tetap Inggris**: Istilah teknis/domain (workspace, dashboard, project, member, owner, task, status, priority, 2FA, recovery code, authentication code).
+- **Kata kerja**: Buat, Simpan, Hapus, Ubah, Batal, Undang, Masuk, Daftar, Lanjutkan, Konfirmasi.
+
 ## Taskflow UI/UX Prinsip
 
 - **Feedback**: Loading state (spinner/skeleton) saat fetch, toast/alert untuk sukses/error.

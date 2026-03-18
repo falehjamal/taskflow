@@ -26,16 +26,16 @@ export default function TwoFactorChallenge() {
             return {
                 title: 'Recovery code',
                 description:
-                    'Please confirm access to your account by entering one of your emergency recovery codes.',
-                toggleText: 'login using an authentication code',
+                    'Masukkan salah satu recovery code darurat untuk mengakses akun Anda.',
+                toggleText: 'masuk dengan authentication code',
             };
         }
 
         return {
             title: 'Authentication code',
             description:
-                'Enter the authentication code provided by your authenticator application.',
-            toggleText: 'login using a recovery code',
+                'Masukkan kode dari aplikasi authenticator Anda.',
+            toggleText: 'masuk dengan recovery code',
         };
     }, [showRecoveryInput]);
 
@@ -66,7 +66,7 @@ export default function TwoFactorChallenge() {
                                     <Input
                                         name="recovery_code"
                                         type="text"
-                                        placeholder="Enter recovery code"
+                                        placeholder="Masukkan recovery code"
                                         autoFocus={showRecoveryInput}
                                         required
                                     />
@@ -107,11 +107,11 @@ export default function TwoFactorChallenge() {
                                 className="w-full"
                                 disabled={processing}
                             >
-                                Continue
+                                Lanjutkan
                             </Button>
 
                             <div className="text-center text-sm text-muted-foreground">
-                                <span>or you can </span>
+                                <span>atau </span>
                                 <button
                                     type="button"
                                     className="cursor-pointer text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Features;
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', '/settings/profile');
@@ -14,7 +15,11 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('settings/security', [SecurityController::class, 'edit'])->name('security.edit');
+    $securityEdit = Route::get('settings/security', [SecurityController::class, 'edit'])->name('security.edit');
+    if (Features::canManageTwoFactorAuthentication()
+        && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
+        $securityEdit->middleware('password.confirm');
+    }
 
     Route::put('settings/password', [SecurityController::class, 'update'])
         ->middleware('throttle:6,1')

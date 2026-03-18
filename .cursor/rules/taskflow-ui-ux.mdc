@@ -7,6 +7,12 @@ alwaysApply: true
 
 Panduan untuk membangun Taskflow sebagai task manager dengan UI/UX yang bagus dan konsisten.
 
+## Bahasa UI
+
+- **Dasar**: Indonesia (label, tombol, deskripsi, empty state).
+- **Tetap Inggris**: workspace, dashboard, project, member, owner, task, status, priority.
+- **Contoh**: "Buat workspace", "Belum ada task", "Simpan", "Hapus".
+
 ## Prinsip Utama
 
 1. **Clarity** — Informasi task mudah dipindai (title, due date, priority, status).

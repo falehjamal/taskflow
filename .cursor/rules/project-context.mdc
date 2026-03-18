@@ -20,6 +20,19 @@ alwaysApply: true
 - React SPA dengan SSR enabled
 - Routing frontend via Laravel Wayfinder (`@/routes`)
 
+## Bahasa (Indonesia + Inggris)
+
+Taskflow menggunakan **Bahasa Indonesia** sebagai bahasa dasar UI, dengan istilah umum tetap **Bahasa Inggris**.
+
+| Kategori | Contoh |
+|----------|--------|
+| **Tetap Inggris** | workspace, dashboard, project, member, owner, task, status, priority |
+| **Indonesia** | Buat, Simpan, Hapus, Ubah, Batal, Undang, Masuk, Daftar, Pengaturan |
+| **Label form** | Nama, Email, Kata sandi, Konfirmasi kata sandi, Deskripsi |
+| **Pesan** | "Belum ada workspace", "Buat task pertama", "Undangan workspace" |
+
+Prinsip: Istilah teknis/domain tetap Inggris; kata kerja, label, dan deskripsi pakai Indonesia.
+
 ## Domain Taskflow
 
 | Konsep | Deskripsi |

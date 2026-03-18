@@ -46,7 +46,7 @@ export default function Welcome({
                                         href={login()}
                                         className="rounded-lg px-5 py-2.5 text-sm font-medium text-[#1b1b18] transition hover:bg-[#f5f5f5] dark:text-[#EDEDEC] dark:hover:bg-[#1a1a1a]"
                                     >
-                                        Log in
+                                        Masuk
                                     </Link>
                                     {canRegister && (
                                         <Link
@@ -200,7 +200,7 @@ export default function Welcome({
                                         href={login()}
                                         className="w-full rounded-lg border border-white/30 bg-white/10 px-8 py-3.5 text-base font-medium text-white transition hover:bg-white/20 sm:w-auto"
                                     >
-                                        Log in
+                                        Masuk
                                     </Link>
                                 </div>
                             )}
