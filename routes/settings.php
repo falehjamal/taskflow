@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\GatewaySettingsController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('user-password.update');
 
     Route::inertia('settings/appearance', 'settings/appearance')->name('appearance.edit');
+
+    Route::middleware('can:viewAny,App\Models\GatewaySetting')->prefix('settings')->group(function () {
+        Route::get('gateways', [GatewaySettingsController::class, 'index'])->name('gateways.index');
+        Route::get('gateways/{name}', [GatewaySettingsController::class, 'edit'])->name('gateways.edit');
+        Route::patch('gateways/{name}', [GatewaySettingsController::class, 'update'])->name('gateways.update');
+        Route::post('gateways/email/test', [GatewaySettingsController::class, 'testEmail'])
+            ->middleware('throttle:3,1')
+            ->name('gateways.email.test');
+        Route::post('gateways/wa/test', [GatewaySettingsController::class, 'testWa'])
+            ->middleware('throttle:3,1')
+            ->name('gateways.wa.test');
+    });
 });

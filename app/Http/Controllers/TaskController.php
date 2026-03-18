@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Models\ActivityLog;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
@@ -37,7 +38,9 @@ class TaskController extends Controller
             }
         }
 
-        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+        return redirect()
+            ->route('workspaces.projects.show', [$workspace, $project])
+            ->with('success', 'Task berhasil dibuat.');
     }
 
     /**
@@ -58,12 +61,21 @@ class TaskController extends Controller
             $previousIds = $task->assignees->pluck('id')->all();
             $task->assignees()->sync($request->assignee_ids);
             $newIds = array_diff($request->assignee_ids, $previousIds);
+            $removedIds = array_diff($previousIds, $request->assignee_ids);
+
             foreach ($newIds as $userId) {
                 User::find($userId)?->notify(new TaskAssignedNotification($task));
+                ActivityLog::log('user_assigned', 'task', $task->id, ['user_id' => $userId], null, $task->id);
+            }
+
+            foreach ($removedIds as $userId) {
+                ActivityLog::log('user_unassigned', 'task', $task->id, ['user_id' => $userId], null, $task->id);
             }
         }
 
-        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+        return redirect()
+            ->route('workspaces.projects.show', [$workspace, $project])
+            ->with('success', 'Task berhasil diperbarui.');
     }
 
     /**
@@ -79,6 +91,8 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+        return redirect()
+            ->route('workspaces.projects.show', [$workspace, $project])
+            ->with('success', 'Task berhasil dihapus.');
     }
 }

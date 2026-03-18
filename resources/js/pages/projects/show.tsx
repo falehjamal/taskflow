@@ -1,4 +1,4 @@
-import { Form, Head, Link, router } from '@inertiajs/react';
+import { Form, Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 import TaskController from '@/actions/App/Http/Controllers/TaskController';
 import InputError from '@/components/input-error';
@@ -25,6 +25,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { KanbanBoard } from '@/components/tasks/kanban-board';
 import { TaskDetailModal } from '@/components/tasks/task-detail-modal';
 import { TaskFilterBar } from '@/components/tasks/task-filter-bar';
+import { TaskListSkeleton } from '@/components/tasks/task-list-skeleton';
+import { useIsNavigating } from '@/hooks/use-is-navigating';
 import AppLayout from '@/layouts/app-layout';
 import workspaces from '@/routes/workspaces';
 import type { BreadcrumbItem } from '@/types';
@@ -259,6 +261,7 @@ export default function ProjectShow({
 }) {
     const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+    const isNavigating = useIsNavigating();
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Workspaces', href: workspaces.index.url() },
@@ -391,7 +394,9 @@ export default function ProjectShow({
                         </div>
                     </CardHeader>
                     <CardContent>
-                        {viewMode === 'kanban' ? (
+                        {isNavigating ? (
+                            <TaskListSkeleton count={tasks.length || 5} />
+                        ) : viewMode === 'kanban' ? (
                             <KanbanBoard
                                 tasks={tasks}
                                 workspace={workspace}
@@ -561,6 +566,7 @@ export default function ProjectShow({
                     task={selectedTask}
                     workspace={workspace}
                     project={project}
+                    members={members}
                     canManage={!!canManage}
                     onClose={() => setSelectedTask(null)}
                 />

@@ -40,7 +40,7 @@ class ProjectController extends Controller
         $this->authorize('view', $project);
 
         $tasksQuery = $project->tasks()
-            ->with(['assignees', 'creator', 'comments.user'])
+            ->with(['assignees', 'creator', 'comments.user', 'activityLogs.user'])
             ->filter([
                 'status' => $request->query('status'),
                 'assigned_to' => $request->query('assigned_to'),

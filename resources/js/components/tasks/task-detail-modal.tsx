@@ -27,6 +27,14 @@ type Comment = {
     created_at: string;
 };
 
+type ActivityLog = {
+    id: number;
+    action: string;
+    metadata: Record<string, unknown> | null;
+    created_at: string;
+    user: User | null;
+};
+
 type Task = {
     id: number;
     title: string;
@@ -36,6 +44,7 @@ type Task = {
     due_date: string | null;
     assignees?: User[];
     comments?: Comment[];
+    activityLogs?: ActivityLog[];
     is_overdue?: boolean;
     is_near_due?: boolean;
 };
@@ -44,8 +53,18 @@ type TaskDetailModalProps = {
     task: Task | null;
     workspace: { id: number };
     project: { id: number };
+    members?: User[];
     canManage: boolean;
     onClose: () => void;
+};
+
+const ACTION_LABELS: Record<string, string> = {
+    task_created: 'Task dibuat',
+    task_updated: 'Task diperbarui',
+    status_changed: 'Status diubah',
+    user_assigned: 'User ditugaskan',
+    user_unassigned: 'User ditanggalkan',
+    comment_added: 'Komentar ditambahkan',
 };
 
 const statusVariant = (status: string) => {
@@ -70,16 +89,38 @@ const priorityVariant = (priority: string) => {
     }
 };
 
+function formatActivityMessage(log: ActivityLog, members: User[] = []): string {
+    const meta = log.metadata ?? {};
+    switch (log.action) {
+        case 'status_changed':
+            return `${meta.old_status ?? '?'} → ${meta.new_status ?? '?'}`;
+        case 'user_assigned':
+        case 'user_unassigned': {
+            const uid = meta.user_id as number | undefined;
+            const u = members.find((m) => m.id === uid);
+            return u ? u.name : uid ? `User #${uid}` : '';
+        }
+        case 'task_updated':
+            return Object.keys(meta)
+                .map((k) => `${k}: diperbarui`)
+                .join(', ') || 'Detail diperbarui';
+        default:
+            return '';
+    }
+}
+
 export function TaskDetailModal({
     task,
     workspace,
     project,
+    members = [],
     canManage,
     onClose,
 }: TaskDetailModalProps) {
     if (!task) return null;
 
     const comments = task.comments ?? [];
+    const activityLogs = task.activityLogs ?? [];
 
     return (
         <Dialog open={!!task} onOpenChange={(open) => !open && onClose()}>
@@ -193,6 +234,56 @@ export function TaskDetailModal({
                         )}
                     </div>
                 </div>
+
+                {activityLogs.length > 0 && (
+                    <div className="mt-4 border-t pt-4">
+                        <h4 className="mb-2 font-medium">Aktivitas</h4>
+                        <div className="relative space-y-4">
+                            {activityLogs.map((log, i) => (
+                                <div
+                                    key={log.id}
+                                    className="relative flex gap-3 pl-4"
+                                >
+                                    {i < activityLogs.length - 1 && (
+                                        <div
+                                            className="absolute left-[5px] top-5 h-full w-px bg-border"
+                                            aria-hidden
+                                        />
+                                    )}
+                                    <div className="bg-primary absolute left-0 top-1 h-2.5 w-2.5 shrink-0 rounded-full" />
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-sm">
+                                            <span className="font-medium">
+                                                {log.user?.name ?? 'Sistem'}
+                                            </span>{' '}
+                                            {ACTION_LABELS[log.action] ??
+                                                log.action}
+                                            {formatActivityMessage(
+                                                log,
+                                                members,
+                                            ) && (
+                                                <span className="text-muted-foreground">
+                                                    {' '}
+                                                    (
+                                                    {formatActivityMessage(
+                                                        log,
+                                                        members,
+                                                    )}
+                                                    )
+                                                </span>
+                                            )}
+                                        </p>
+                                        <p className="text-muted-foreground mt-0.5 text-xs">
+                                            {new Date(
+                                                log.created_at,
+                                            ).toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </DialogContent>
         </Dialog>
     );

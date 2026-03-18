@@ -2,6 +2,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { FlashToaster } from '@/components/flash-toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import '../css/app.css';
 import { initializeTheme } from '@/hooks/use-appearance';
@@ -14,7 +15,17 @@ createInertiaApp({
         resolvePageComponent(
             `./pages/${name}.tsx`,
             import.meta.glob('./pages/**/*.tsx'),
-        ),
+        ).then((module) => {
+            const Page = module.default;
+            return function AppWithFlash(props: object) {
+                return (
+                    <>
+                        <Page {...props} />
+                        <FlashToaster />
+                    </>
+                );
+            };
+        }),
     setup({ el, App, props }) {
         const root = createRoot(el);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Comment\StoreCommentRequest;
+use App\Models\ActivityLog;
 use App\Models\Comment;
 use App\Models\Project;
 use App\Models\Task;
@@ -23,12 +24,23 @@ class CommentController extends Controller
 
         $this->authorize('update', $task);
 
-        $task->comments()->create([
+        $comment = $task->comments()->create([
             'content' => $request->validated('content'),
             'user_id' => $request->user()->id,
         ]);
 
-        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+        ActivityLog::log(
+            'comment_added',
+            'comment',
+            $comment->id,
+            ['comment_id' => $comment->id, 'task_id' => $task->id],
+            $request->user()->id,
+            $task->id
+        );
+
+        return redirect()
+            ->route('workspaces.projects.show', [$workspace, $project])
+            ->with('success', 'Komentar berhasil ditambahkan.');
     }
 
     /**
@@ -48,6 +60,8 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+        return redirect()
+            ->route('workspaces.projects.show', [$workspace, $project])
+            ->with('success', 'Komentar berhasil dihapus.');
     }
 }

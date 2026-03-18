@@ -75,6 +75,14 @@ class Task extends Model
     }
 
     /**
+     * Get the activity logs for the task.
+     */
+    public function activityLogs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\ActivityLog::class)->orderByDesc('created_at');
+    }
+
+    /**
      * Get the comments for the task.
      */
     public function comments(): HasMany
