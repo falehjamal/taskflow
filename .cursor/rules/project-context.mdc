@@ -1,0 +1,37 @@
+---
+description: Konteks proyek - Laravel 13 + React, tech stack dan arsitektur
+alwaysApply: true
+---
+
+# Project Context
+
+## Tech Stack
+
+- **Backend**: Laravel 13, PHP 8.3+
+- **Frontend**: Inertia.js + React 19, TypeScript
+- **Database**: MySQL
+- **Build**: Vite 7, Tailwind CSS 4
+
+## Arsitektur
+
+- Laravel backend dengan Inertia.js sebagai bridge
+- React SPA dengan SSR enabled
+- Routing frontend via Laravel Wayfinder (`@/routes`)
+
+## Struktur Penting
+
+| Area | Path |
+|------|------|
+| Backend (controllers, models, etc) | `app/` |
+| Routes | `routes/` |
+| Config | `config/` |
+| Frontend pages | `resources/js/pages/` |
+| Frontend components | `resources/js/components/` |
+| Vite config | `vite.config.ts` |
+
+## Dokumentasi Resmi
+
+- Laravel: https://laravel.com/docs
+- Inertia.js: https://inertiajs.com
+- React: https://react.dev
+- Vite (Laravel): https://laravel.com/docs/vite

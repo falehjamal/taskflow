@@ -1,0 +1,34 @@
+---
+alwaysApply: true
+---
+# Laravel Best Practices
+
+Ikuti Laravel Documentation: https://laravel.com/docs/13.x
+
+## Conventions
+
+- **Eloquent**: Gunakan model, relationships, scopes. Hindari raw query jika tidak perlu.
+- **Migrations**: Satu migration per perubahan schema. Gunakan `Schema::` facade.
+- **Validation**: FormRequest untuk request validation. Jangan validasi di controller.
+- **Routes**: `web.php` untuk web, `api.php` untuk API. Gunakan route names.
+
+## Architecture
+
+- **Service Container**: Dependency injection via constructor.
+- **Auth**: Project ini pakai Laravel Fortify untuk authentication.
+
+## Contoh
+
+```php
+// ✅ FormRequest untuk validation
+class StorePostRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return ['title' => 'required|string|max:255'];
+    }
+}
+
+// ✅ Route dengan name
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+```

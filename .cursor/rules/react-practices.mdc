@@ -1,0 +1,38 @@
+---
+alwaysApply: true
+---
+# React & Inertia Best Practices
+
+- React: https://react.dev
+- Inertia.js: https://inertiajs.com
+
+## Conventions
+
+- **Components**: Functional components dengan hooks. Hindari class components.
+- **Routing**: Gunakan `@/routes` (Wayfinder) untuk link dan redirect. Tidak pakai React Router.
+- **Data**: Props dari Inertia via `usePage().props` atau page props.
+- **Styling**: Tailwind CSS. Gunakan `clsx` atau `cva` untuk conditional classes.
+
+## Inertia Patterns
+
+- `Link` dari `@inertiajs/react` untuk navigasi (bukan `<a>`).
+- `Head` untuk title dan meta.
+- `router.visit()` untuk programmatic navigation.
+
+## Contoh
+
+```tsx
+import { Head, Link, usePage } from '@inertiajs/react';
+import { dashboard } from '@/routes';
+
+export default function Welcome() {
+    const { auth } = usePage().props;
+
+    return (
+        <>
+            <Head title="Welcome" />
+            <Link href={dashboard()}>Dashboard</Link>
+        </>
+    );
+}
+```
