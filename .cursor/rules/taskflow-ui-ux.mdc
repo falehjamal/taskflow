@@ -1,0 +1,80 @@
+---
+description: Panduan UI/UX untuk Taskflow - task manager dengan pengalaman pengguna terbaik
+alwaysApply: true
+---
+
+# Taskflow UI/UX Guidelines
+
+Panduan untuk membangun Taskflow sebagai task manager dengan UI/UX yang bagus dan konsisten.
+
+## Prinsip Utama
+
+1. **Clarity** — Informasi task mudah dipindai (title, due date, priority, status).
+2. **Efficiency** — Minimal klik untuk aksi umum (complete, edit, delete).
+3. **Feedback** — User selalu tahu apa yang terjadi (loading, sukses, error).
+4. **Delight** — Micro-interactions halus, empty state ramah, visual hierarchy jelas.
+
+## Visual Hierarchy
+
+| Elemen | Prioritas | Contoh |
+|--------|-----------|--------|
+| Task title | Tertinggi | Font medium/semibold, ukuran jelas |
+| Due date | Tinggi | Badge/warna: overdue (red), today (amber), future (neutral) |
+| Priority | Tinggi | Badge: urgent (red), high (orange), medium (blue), low (gray) |
+| Status | Sedang | Chip: todo, in progress, done |
+| Description | Rendah | Collapsed by default, expand on click |
+
+## Komponen Task Manager
+
+- **Task Card**: Compact, tap/click untuk expand detail. Checkbox untuk complete di kiri.
+- **Task List**: Alternating row hover, drag handle untuk reorder.
+- **Kanban Board**: Kolom status, card draggable antar kolom.
+- **Quick Add**: Input inline di atas list untuk tambah task cepat.
+- **Filter/Sort**: Toggle atau dropdown: by date, priority, status, project.
+
+## States & Feedback
+
+- **Loading**: Skeleton untuk list, spinner untuk button/action.
+- **Empty State**: Ilustrasi + teks "Belum ada task" + CTA "Buat task pertama".
+- **Error**: Alert/toast dengan pesan jelas dan retry option.
+- **Success**: Toast singkat untuk create/update/delete (auto-dismiss 2–3 detik).
+
+## Accessibility
+
+- Label semua form input (`htmlFor` + `id`).
+- Focus visible pada interactive elements.
+- Keyboard: Tab order logis, Enter untuk submit, Escape untuk close modal.
+- Kontras warna memenuhi WCAG AA (min 4.5:1 untuk teks).
+
+## Responsive
+
+- **Mobile**: Single column, bottom sheet untuk detail task, FAB untuk add.
+- **Tablet**: 2 kolom atau sidebar collapsible.
+- **Desktop**: Sidebar + main content, hover actions pada task row.
+
+## Micro-interactions
+
+- Checkbox complete: animasi check (scale + opacity).
+- Drag: subtle shadow + scale saat drag.
+- Delete: konfirmasi sebelum hapus (dialog dengan "Batal" dan "Hapus").
+
+## Warna & Badge (Contoh)
+
+```
+Priority:
+- urgent: red-500 / destructive
+- high: orange-500 / warning
+- medium: blue-500 / primary
+- low: gray-500 / muted
+
+Status:
+- todo: gray
+- in_progress: blue
+- done: green (dengan strikethrough pada title)
+```
+
+## Referensi
+
+- [Nielsen Norman Group - Task Management UX](https://www.nngroup.com/)
+- [Material Design - Lists](https://m3.material.io/components/lists)
+- [Tailwind UI - Application Shell](https://tailwindui.com/)

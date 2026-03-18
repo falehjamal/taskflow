@@ -11,6 +11,16 @@ class ProfileUpdateRequest extends FormRequest
     use ProfileValidationRules;
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('phone') && $this->phone === '') {
+            $this->merge(['phone' => null]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>

@@ -1,7 +1,7 @@
 ---
 alwaysApply: true
 ---
-# React & Inertia Best Practices
+# React & Inertia Best Practices (Taskflow)
 
 - React: https://react.dev
 - Inertia.js: https://inertiajs.com
@@ -18,6 +18,15 @@ alwaysApply: true
 - `Link` dari `@inertiajs/react` untuk navigasi (bukan `<a>`).
 - `Head` untuk title dan meta.
 - `router.visit()` untuk programmatic navigation.
+
+## Taskflow UI/UX Prinsip
+
+- **Feedback**: Loading state (spinner/skeleton) saat fetch, toast/alert untuk sukses/error.
+- **Empty State**: Tampilkan ilustrasi + CTA jelas saat belum ada task.
+- **Hierarchy**: Prioritas visual jelas (urgent > high > medium > low). Gunakan warna/badge konsisten.
+- **Accessibility**: Label form, focus states, keyboard navigation. Gunakan `aria-*` bila perlu.
+- **Responsive**: Mobile-first. Task list/card harus nyaman di layar kecil.
+- **Optimistic UI**: Untuk toggle complete, drag-drop—update UI dulu, sync ke server di background.
 
 ## Contoh
 

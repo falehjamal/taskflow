@@ -1,9 +1,11 @@
 ---
-description: Konteks proyek - Laravel 13 + React, tech stack dan arsitektur
+description: Konteks proyek Taskflow - Laravel 13 + React, tech stack dan arsitektur
 alwaysApply: true
 ---
 
-# Project Context
+# Project Context: Taskflow
+
+**Taskflow** adalah aplikasi **task manager** untuk mengelola tugas harian dengan fitur lengkap dan UI/UX yang nyaman.
 
 ## Tech Stack
 
@@ -18,6 +20,16 @@ alwaysApply: true
 - React SPA dengan SSR enabled
 - Routing frontend via Laravel Wayfinder (`@/routes`)
 
+## Domain Taskflow
+
+| Konsep | Deskripsi |
+|--------|------------|
+| **Task** | Unit kerja utama: title, description, due date, priority, status |
+| **Project** | Grup task (opsional) untuk organisasi |
+| **List/Board** | View: list view atau kanban board |
+| **Status** | todo, in_progress, done (atau custom) |
+| **Priority** | low, medium, high, urgent |
+
 ## Struktur Penting
 
 | Area | Path |
@@ -27,6 +39,7 @@ alwaysApply: true
 | Config | `config/` |
 | Frontend pages | `resources/js/pages/` |
 | Frontend components | `resources/js/components/` |
+| Task-specific components | `resources/js/components/tasks/` |
 | Vite config | `vite.config.ts` |
 
 ## Dokumentasi Resmi
