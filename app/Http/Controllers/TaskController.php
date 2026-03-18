@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\Task\StoreTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\User;
+use App\Models\Workspace;
+use App\Notifications\TaskAssignedNotification;
+use Illuminate\Http\RedirectResponse;
+
+class TaskController extends Controller
+{
+    /**
+     * Store a newly created task.
+     */
+    public function store(StoreTaskRequest $request, Workspace $workspace, Project $project): RedirectResponse
+    {
+        if ($project->workspace_id !== $workspace->id) {
+            abort(404);
+        }
+
+        $this->authorize('create', [Task::class, $project]);
+
+        $data = collect($request->validated())->except('assignee_ids')->all();
+        $task = $project->tasks()->create([
+            ...$data,
+            'created_by' => $request->user()->id,
+        ]);
+
+        if ($request->has('assignee_ids') && ! empty($request->assignee_ids)) {
+            $task->assignees()->sync($request->assignee_ids);
+            foreach ($request->assignee_ids as $userId) {
+                User::find($userId)?->notify(new TaskAssignedNotification($task));
+            }
+        }
+
+        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+    }
+
+    /**
+     * Update the specified task.
+     */
+    public function update(UpdateTaskRequest $request, Workspace $workspace, Project $project, Task $task): RedirectResponse
+    {
+        if ($project->workspace_id !== $workspace->id || $task->project_id !== $project->id) {
+            abort(404);
+        }
+
+        $this->authorize('update', $task);
+
+        $data = collect($request->validated())->except('assignee_ids')->all();
+        $task->update($data);
+
+        if ($request->has('assignee_ids')) {
+            $previousIds = $task->assignees->pluck('id')->all();
+            $task->assignees()->sync($request->assignee_ids);
+            $newIds = array_diff($request->assignee_ids, $previousIds);
+            foreach ($newIds as $userId) {
+                User::find($userId)?->notify(new TaskAssignedNotification($task));
+            }
+        }
+
+        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+    }
+
+    /**
+     * Remove the specified task.
+     */
+    public function destroy(Workspace $workspace, Project $project, Task $task): RedirectResponse
+    {
+        if ($project->workspace_id !== $workspace->id || $task->project_id !== $project->id) {
+            abort(404);
+        }
+
+        $this->authorize('delete', $task);
+
+        $task->delete();
+
+        return redirect()->route('workspaces.projects.show', [$workspace, $project]);
+    }
+}

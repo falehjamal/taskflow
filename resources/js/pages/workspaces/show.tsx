@@ -523,7 +523,12 @@ export default function WorkspaceShow({
                                             key={project.id}
                                             className="flex items-center justify-between rounded-lg border p-3"
                                         >
-                                            <div>
+                                            <Link
+                                                href={workspaces.projects.show.url(
+                                                    { workspace, project },
+                                                )}
+                                                className="flex-1 hover:opacity-80"
+                                            >
                                                 <p className="font-medium">
                                                     {project.name}
                                                 </p>
@@ -543,7 +548,7 @@ export default function WorkspaceShow({
                                                             ).toLocaleDateString()}
                                                     </p>
                                                 )}
-                                            </div>
+                                            </Link>
                                             <div className="flex gap-2">
                                                 <Dialog>
                                                     <DialogTrigger asChild>
